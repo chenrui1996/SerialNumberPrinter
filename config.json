@@ -1,0 +1,101 @@
+﻿{
+  "ProductSuffixs": [
+    {
+      "ProductFamily": "MCI",
+      "Naed": "45250",
+      "Suffix": "L",
+      "Revision": 1
+    },
+    {
+      "ProductFamily": "Relay Panel Module",
+      "Naed": "45268",
+      "Suffix": "P",
+      "Revision": 1
+    },
+    {
+      "ProductFamily": "ALC",
+      "Naed": "45270",
+      "Suffix": "A",
+      "Revision": 1
+    },
+    {
+      "ProductFamily": "Installation and Testing Tool",
+      "Naed": "45272",
+      "Suffix": "T",
+      "Revision": 1
+    },
+    {
+      "ProductFamily": "DALI Bridge Module",
+      "Naed": "45273",
+      "Suffix": "D",
+      "Revision": 1
+    },
+    {
+      "ProductFamily": "ECU G4 / Wired Manger",
+      "Naed": "45208 /56365",
+      "Suffix": "M",
+      "Revision": 1
+    },
+    {
+      "ProductFamily": "ILCM",
+      "Naed": "45552",
+      "Suffix": "O",
+      "Revision": 1
+    },
+    {
+      "ProductFamily": "Tunable White Wall Controller",
+      "Naed": "58289",
+      "Suffix": "V",
+      "Revision": 1
+    },
+    {
+      "ProductFamily": "DALI Panel",
+      "Naed": "56350",
+      "Suffix": "Q",
+      "Revision": 1
+    },
+    {
+      "ProductFamily": "Phase Cut Dimmer",
+      "Naed": "56315",
+      "Suffix": "S",
+      "Revision": 1
+    },
+    {
+      "ProductFamily": "GB2 Keypads",
+      "Naed": "45640",
+      "Suffix": "W",
+      "Revision": 1
+    },
+    {
+      "ProductFamily": "Relay Panel Assemblies",
+      "Naed": "45500",
+      "Suffix": "R",
+      "Revision": 1
+    },
+    {
+      "ProductFamily": "GB2 PIR Sensor",
+      "Naed": "56355",
+      "Suffix": "U",
+      "Revision": 1
+    },
+    {
+      "ProductFamily": "SIM",
+      "Naed": "45246",
+      "Suffix": "I",
+      "Revision": 1
+    },
+    {
+      "ProductFamily": "Dry Contact Input Interface",
+      "Naed": "56360",
+      "Suffix": "T",
+      "Revision": 1
+    },
+    {
+      "ProductFamily": "DALI ECU",
+      "Naed": "56377",
+      "Suffix": "Y",
+      "Revision": 1
+    }
+
+  ]
+}
