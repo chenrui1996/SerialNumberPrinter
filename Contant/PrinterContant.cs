@@ -15,6 +15,10 @@ namespace SerialNumberPrinter.Contant
     {
         public static int LabelHight = 80;
         public static int LabelWidth = 275;
+        public static int HorizontalFeed = 30;
+        public static int DefultCopies = 1;
+        public static int DefultColums = 2;
+        public static int PrintDarkness = 20;
 
         /// <summary>
         /// 
@@ -30,6 +34,14 @@ namespace SerialNumberPrinter.Contant
                 return;
             }
             TemplateUrl = exeDir + "\\Template\\Template.txt";
+        }
+
+        public static void InitConfig()
+        {
+            HorizontalFeed = ConfigurationContant.Configuration?.HorizontalFeed ?? 30;
+            DefultCopies = ConfigurationContant.Configuration?.DefultCopies ?? 1;
+            DefultColums = ConfigurationContant.Configuration?.DefultColums ?? 2;
+            PrintDarkness = ConfigurationContant.Configuration?.PrintDarkness ?? 10;
         }
         /// <summary>
         /// byte转IntPtr

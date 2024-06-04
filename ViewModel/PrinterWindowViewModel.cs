@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using BarcodeStandard;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SerialNumberPrinter.Contant;
 using SerialNumberPrinter.Helper;
@@ -46,7 +47,10 @@ namespace SerialNumberPrinter.ViewModel
         {
             try
             {
+                Copies = PrinterContant.DefultCopies;
+                Columns = PrinterContant.DefultColums;
                 UserDefinedFlag = false;
+                ColEnableFlag = true;
                 UserDefinedVisibility = UserDefinedFlag ? "Visible" : "Collapsed";
                 CodeDefinedVisibility = !UserDefinedFlag ? "Visible" : "Collapsed";
                 if (ConfigurationContant.Configuration == null || ConfigurationContant.CurrentSerialNumber == -1)
@@ -85,10 +89,9 @@ namespace SerialNumberPrinter.ViewModel
                 {
                     ProductFamilyItems.Add(item);
                 }
-                SN = ConfigurationContant.CurrentSerialNumber.ToHexString();
+                refreeshSN();
                 DC = DateTime.Now.ToYYWWString();
                 ProductFamily = ProductFamilyItems.First();
-                Copies = 1;
                 Task.Run(() =>
                 {
                     while (true)
@@ -110,6 +113,7 @@ namespace SerialNumberPrinter.ViewModel
             }
             catch (Exception e)
             {
+                LogHelper.Error(e.Message, e);
                 MessageBox.Show(e.Message, "初始化失败", MessageBoxButton.OK, MessageBoxImage.Error);
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -140,9 +144,8 @@ namespace SerialNumberPrinter.ViewModel
                         ?.ProductSuffixs?.Where(r => r.Suffix == Suffix).FirstOrDefault()
                         ?.Revision ?? 0;
                     Revision = rev.ToString().PadLeft(2, '0');
-                    Barcode = string.Format("{0}-{1}", SN, Suffix);
-                    _labelbitmap = new BarCodeHelper().GenerateLabel(Barcode, DC, Revision, PrinterContant.LabelWidth, PrinterContant.LabelHight);
-                    LabelImg = _labelbitmap.ConvertBitmapToBitmapImage();
+                    refreeshBarcode();
+                    refreeshImage();
                 }
             }
         }
@@ -171,8 +174,7 @@ namespace SerialNumberPrinter.ViewModel
                 if (_dc != value)
                 {
                     SetProperty(ref _dc, value);
-                    _labelbitmap = new BarCodeHelper().GenerateLabel(Barcode, DC, Revision, PrinterContant.LabelWidth, PrinterContant.LabelHight);
-                    LabelImg = _labelbitmap.ConvertBitmapToBitmapImage();
+                    refreeshImage();
                 }
             }
         }
@@ -187,7 +189,7 @@ namespace SerialNumberPrinter.ViewModel
                 if (_sn != value)
                 {
                     SetProperty(ref _sn, value);
-                    Barcode = string.Format("{0}-{1}", SN, Suffix);
+                    refreeshBarcode();
                 }
             }
         }
@@ -216,8 +218,7 @@ namespace SerialNumberPrinter.ViewModel
                 if (_barcode != value)
                 {
                     SetProperty(ref _barcode, value);
-                    _labelbitmap = new BarCodeHelper().GenerateLabel(Barcode, DC, Revision, PrinterContant.LabelWidth, PrinterContant.LabelHight);
-                    LabelImg = _labelbitmap.ConvertBitmapToBitmapImage();
+                    refreeshImage();
                 }
             }
         }
@@ -246,14 +247,29 @@ namespace SerialNumberPrinter.ViewModel
             {
                 if (_userDefinedFlag != value)
                 {
+                    Columns = PrinterContant.DefultCopies;
+                    ColEnableFlag = !value;
                     SetProperty(ref _userDefinedFlag, value);
                     UserDefinedVisibility = UserDefinedFlag ? "Visible" : "Collapsed";
                     CodeDefinedVisibility = !UserDefinedFlag ? "Visible" : "Collapsed";
                     if (!UserDefinedFlag)
                     {
-                        SN = ConfigurationContant.CurrentSerialNumber.ToHexString();
+                        refreeshSN();
                         DC = DateTime.Now.ToYYWWString();
                     }
+                }
+            }
+        }
+
+        private bool _colEnableFlag;
+        public bool ColEnableFlag
+        {
+            get { return _colEnableFlag; }
+            set
+            {
+                if (_colEnableFlag != value)
+                {
+                    SetProperty(ref _colEnableFlag, value);
                 }
             }
         }
@@ -282,6 +298,42 @@ namespace SerialNumberPrinter.ViewModel
                     SetProperty(ref _codeDefinedVisibility, value);
                 }
             }
+        }
+
+        private void refreeshSN()
+        {
+            var curSn = ConfigurationContant.CurrentSerialNumber;
+            SN = string.Empty;
+            for (int i = 0; i < Columns; i++)
+            {
+                SN += (i == 0 ? "": "|") + curSn.ToHexString();
+                curSn++;
+            }
+        }
+
+        private void refreeshBarcode()
+        {
+            if (string.IsNullOrEmpty(SN))
+            {
+                return;
+            }
+            var snList = SN.Split("|").Select(s =>
+            {
+                return $"{s}-{Suffix}";
+            });
+            Barcode = string.Join("|", snList);
+            
+        }
+
+        private void refreeshImage()
+        {
+            //_labelbitmap = new BarCodeHelper().GenerateLabel(Barcode, DC, Revision, PrinterContant.LabelWidth, PrinterContant.LabelHight);
+            if (string.IsNullOrEmpty(Barcode) || string.IsNullOrEmpty(DC) || string.IsNullOrEmpty(Revision) || string.IsNullOrEmpty(Suffix))
+            {
+                return;
+            }
+            _labelbitmap = new BarCodeHelper().GenerateLabel4MultipleCol(Columns, PrinterContant.HorizontalFeed, Barcode, DC, Revision, PrinterContant.LabelWidth, PrinterContant.LabelHight);
+            LabelImg = _labelbitmap.ConvertBitmapToBitmapImage();
         }
 
         #endregion
@@ -317,6 +369,24 @@ namespace SerialNumberPrinter.ViewModel
         #endregion
 
         #region print
+        private int _columns;
+
+        public int Columns
+        {
+            get { return _columns; }
+            set
+            {
+                if (_columns != value)
+                {
+                    SetProperty(ref _columns, value);
+                    if (!UserDefinedFlag)
+                    {
+                        refreeshSN();
+                    }
+                }
+            }
+        }
+
         private int _copies;
 
         public int Copies
@@ -352,8 +422,8 @@ namespace SerialNumberPrinter.ViewModel
                 {
                     return;
                 }
-                ConfigurationContant.CurrentSerialNumber = ConfigurationContant.CurrentSerialNumber + 1;
-                SN = ConfigurationContant.CurrentSerialNumber.ToHexString();
+                ConfigurationContant.CurrentSerialNumber = ConfigurationContant.CurrentSerialNumber + Columns;
+                refreeshSN();
             }
             catch (Exception e)
             {

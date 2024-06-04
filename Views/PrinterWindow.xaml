@@ -360,6 +360,7 @@
                         <RowDefinition Height="160"/>
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Border Background="{DynamicResource BorderBrush}" Margin="2,2,2,2">
                         <Border Width="270" Height="75" RenderTransformOrigin="0.497,0.405">
@@ -392,7 +393,42 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel
                             Grid.Column="0"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Orientation="Horizontal">
+                            <hc:SimpleText
+                                FontSize="12"
+                                Text="Columns:"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Margin="15,0,15,0"/>
+                        </StackPanel>
+
+                        <StackPanel
+                            Grid.Column="1"
                             VerticalAlignment="Center" 
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                            <hc:NumericUpDown
+                                IsEnabled="{Binding ColEnableFlag}"
+                                FontSize="15"
+                                Width="130"
+                                VerticalAlignment="Center"
+                                Increment="1"
+                                Maximum="2"
+                                Minimum="1"
+                                Margin="10,0,15,0"
+                                Value="{Binding Columns}"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             Orientation="Horizontal">
                             <hc:SimpleText
@@ -400,7 +436,7 @@
                                 Text="Copies:"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
-                                Margin="10,0,15,0"/>
+                                Margin="15,0,15,0"/>
                         </StackPanel>
 
                         <StackPanel
@@ -415,12 +451,12 @@
                                 Increment="1"
                                 Maximum="10"
                                 Minimum="1"
-                                Margin="10,0,10,0"
+                                Margin="10,0,15,0"
                                 Value="{Binding Copies}"/>
                         </StackPanel>
                     </Grid>
                     <StackPanel
-                        Grid.Row="2"
+                        Grid.Row="3"
                         VerticalAlignment="Center" 
                         HorizontalAlignment="Center"
                         Orientation="Horizontal">

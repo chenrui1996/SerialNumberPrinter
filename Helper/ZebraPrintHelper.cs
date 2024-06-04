@@ -424,9 +424,9 @@ namespace SerialNumberPrinter.Helper
             var textBitmap = CompressLz77(textHex);
             for (var i = 0; i < _copies; i++)
             {
-                copiesString += "^XA^FO0,0^XGR:IMAGE.GRF,1,1^FS^XZ";
+                copiesString += $"^XA^MD{PrinterContant.PrintDarkness}^FO0,0^XGR:IMAGE.GRF,1,1^FS^XZ";
             }
-            var text = string.Format("^XA\r\n^IDR:*.GRF\r\n^XZ~DGR:IMAGE.GRF,{0},{1},{2}{3}^IDR:IMAGE.GRF",
+            var text = string.Format("^XA^IDR:*.GRF^XZ~DGR:IMAGE.GRF,{0},{1},{2}{3}",
                 _graphHeight*RowRealBytesCount,
                 RowRealBytesCount,
                 textBitmap,

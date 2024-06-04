@@ -27,6 +27,7 @@ namespace SerialNumberPrinter
                 ConfigurationContant.GetConfiguration();
                 ConfigurationContant.GetCurrentSerialNumber();
                 PrinterContant.InitTemplateUrl();
+                PrinterContant.InitConfig();
 
                 string path = AppDomain.CurrentDomain.BaseDirectory + "\\log4net.config";
                 XmlConfigurator.Configure(new FileInfo(path));

@@ -1,5 +1,6 @@
 ﻿
 using BarcodeStandard;
+using SerialNumberPrinter.Contant;
 using SkiaSharp;
 using System;
 using System.Drawing;
@@ -8,11 +9,31 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 
 namespace SerialNumberPrinter.Helper
 {
     public class BarCodeHelper
     {
+        public Bitmap GenerateLabel4MultipleCol(int cols, int horizontalFeed, string barCodes, string dc, string revision, int width, int height)
+        {
+            var bitmap = new Bitmap(width * cols + (cols - 1) * horizontalFeed, height);
+            var barCodeList = barCodes.Split("|");
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                g.Clear(Color.White);
+                for (int i = 0; i < barCodeList.Length; i++)
+                {
+                    var barCode = barCodeList[i].Trim();
+                    var temp = GenerateLabel(barCode, dc, revision, width, height);
+                    g.DrawImage(temp, new Rectangle((width + horizontalFeed) * i, 0, temp.Width, temp.Height));
+               
+                }
+            }
+            //bitmap.Save(@"C:\tempPic\temp" + DateTime.Now.Ticks + ".png");
+            return bitmap;
+        }
+
         public Bitmap GenerateLabel(string barCode, string dc, string revision, int width, int height)
         {
             var bitmap = new Bitmap(width, height);

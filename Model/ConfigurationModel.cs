@@ -8,6 +8,10 @@ namespace SerialNumberPrinter.Model
 {
     public class ConfigurationModel
     {
+        public int HorizontalFeed { set; get; }
+        public int DefultCopies { set; get; }
+        public int DefultColums { set; get; }
+        public int PrintDarkness { set; get; }
         public List<ProductSuffix>? ProductSuffixs { set; get; }
     }
 
