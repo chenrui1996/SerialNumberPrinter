@@ -1,8 +1,8 @@
 ﻿{
   "HorizontalFeed": 30,
   "DefultCopies": 1,
-  "DefultColums": 1,
-  "PrintDarkness": 10,
+  "DefultColums": 2,
+  "PrintDarkness": 14,
   "ProductSuffixs": [
     {
       "ProductFamily": "MCI",
